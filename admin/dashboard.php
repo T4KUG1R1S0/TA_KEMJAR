@@ -1,104 +1,41 @@
 <?php
+
+/** @var mysqli $conn */
+
 include "../middleware/auth.php";
+include "../config/koneksi.php";
 
 if($_SESSION['role']!='admin'){
-    die("Akses Ditolak");
+    die("Akses ditolak");
 }
+
+$pasien = mysqli_fetch_assoc(
+mysqli_query($conn,
+"SELECT COUNT(*) total FROM pasien")
+);
+
+$dokter = mysqli_fetch_assoc(
+mysqli_query($conn,
+"SELECT COUNT(*) total FROM dokter")
+);
+
+$rekam = mysqli_fetch_assoc(
+mysqli_query($conn,
+"SELECT COUNT(*) total FROM rekam_medis")
+);
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
+<h1>Dashboard Admin</h1>
 
-<title>Admin Dashboard</title>
+<p>Selamat datang <?= $_SESSION['nama'] ?></p>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<ul>
+<li>Total Pasien : <?= $pasien['total'] ?></li>
+<li>Total Dokter : <?= $dokter['total'] ?></li>
+<li>Total Rekam Medis : <?= $rekam['total'] ?></li>
+</ul>
 
-</head>
-
-<body>
-
-<nav class="navbar navbar-dark bg-dark">
-
-<div class="container-fluid">
-
-<span class="navbar-brand">
-MediSecure Admin
-</span>
-
-<a
-href="../auth/logout.php"
-class="btn btn-danger">
-
-Logout
-
-</a>
-
-</div>
-
-</nav>
-
-<div class="container mt-4">
-
-<div class="row">
-
-<div class="col-md-4">
-
-<div class="card p-3">
-
-<h4>Kelola Dokter</h4>
-
-<a
-href="dokter.php"
-class="btn btn-primary">
-
-Masuk
-
-</a>
-
-</div>
-
-</div>
-
-<div class="col-md-4">
-
-<div class="card p-3">
-
-<h4>Kelola Pasien</h4>
-
-<a
-href="pasien.php"
-class="btn btn-success">
-
-Masuk
-
-</a>
-
-</div>
-
-</div>
-
-<div class="col-md-4">
-
-<div class="card p-3">
-
-<h4>Activity Log</h4>
-
-<a
-href="logs.php"
-class="btn btn-warning">
-
-Masuk
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</body>
-</html>
+<a href="dokter.php">Kelola Dokter</a><br>
+<a href="pasien.php">Kelola Pasien</a><br>
+<a href="logs.php">Activity Logs</a><br>
+<a href="../auth/logout.php">Logout</a>

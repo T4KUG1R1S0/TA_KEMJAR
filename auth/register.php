@@ -1,4 +1,9 @@
 <?php
+/** @var mysqli $conn */
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+session_start();
 
 include "../config/koneksi.php";
 
@@ -6,92 +11,148 @@ $message = "";
 
 if(isset($_POST['register'])){
 
-    $nama = htmlspecialchars($_POST['nama']);
-    $email = htmlspecialchars($_POST['email']);
+    $nama = trim($_POST['nama']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
 
-    $password = password_hash(
-        $_POST['password'],
-        PASSWORD_DEFAULT
+    $cek = $conn->prepare(
+        "SELECT id FROM users WHERE email=?"
     );
 
-    $stmt = $conn->prepare(
-        "INSERT INTO users
-        (nama,email,password,role)
-        VALUES (?,?,?,'pasien')"
-    );
+    $cek->bind_param("s",$email);
+    $cek->execute();
 
-    $stmt->bind_param(
-        "sss",
-        $nama,
-        $email,
-        $password
-    );
+    if($cek->get_result()->num_rows > 0){
 
-    if($stmt->execute()){
-        $message = "Registrasi berhasil";
+        $message = "
+        <div class='alert alert-danger'>
+            Email sudah digunakan
+        </div>";
+
     }else{
-        $message = "Registrasi gagal";
-    }
 
+        $hash = password_hash(
+            $password,
+            PASSWORD_DEFAULT
+        );
+
+        $stmt = $conn->prepare(
+            "INSERT INTO users
+            (nama,email,password,role)
+            VALUES (?,?,?,'pasien')"
+        );
+
+        $stmt->bind_param(
+            "sss",
+            $nama,
+            $email,
+            $hash
+        );
+
+        if($stmt->execute()){
+
+            $message = "
+            <div class='alert alert-success'>
+                Registrasi berhasil
+            </div>";
+
+        }else{
+
+            $message = "
+            <div class='alert alert-danger'>
+                Registrasi gagal
+            </div>";
+
+        }
+    }
 }
+
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
 
-<title>Register</title>
+<meta charset="UTF-8">
+
+<title>Register MediSecure</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
 
 <body>
 
-<div class="container mt-5">
+<div class="login-container">
 
-<h2>Register Pasien</h2>
+<div class="login-card">
+
+<h2 class="login-title">
+🏥 Register MediSecure
+</h2>
 
 <?= $message ?>
 
 <form method="POST">
 
 <div class="mb-3">
-<label>Nama</label>
+
 <input
 type="text"
 name="nama"
 class="form-control"
+placeholder="Nama Lengkap"
 required>
+
 </div>
 
 <div class="mb-3">
-<label>Email</label>
+
 <input
 type="email"
 name="email"
 class="form-control"
+placeholder="Email"
 required>
+
 </div>
 
 <div class="mb-3">
-<label>Password</label>
+
 <input
 type="password"
 name="password"
 class="form-control"
+placeholder="Password"
 required>
+
 </div>
 
 <button
+type="submit"
 name="register"
-class="btn btn-success">
+class="btn btn-primary w-100">
 
-Register
+Daftar
 
 </button>
 
 </form>
+
+<div class="text-center mt-3">
+
+Sudah punya akun?
+
+<a href="login.php">
+Login
+</a>
+
+</div>
+
+</div>
 
 </div>
 

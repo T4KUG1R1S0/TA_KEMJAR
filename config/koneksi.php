@@ -1,17 +1,12 @@
 <?php
 
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "medisecure";
-
 $conn = mysqli_connect(
-    $host,
-    $user,
-    $pass,
-    $db
+    "localhost",
+    "root",
+    "",
+    "medisecure"
 );
 
-if(!$conn){
-    die("Koneksi gagal");
+if (!$conn) {
+    die("Koneksi database gagal");
 }

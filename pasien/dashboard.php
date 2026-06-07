@@ -2,34 +2,19 @@
 
 include "../middleware/auth.php";
 
-if($_SESSION['role'] != 'pasien'){
-    die("Akses Ditolak");
+if($_SESSION['role']!='pasien'){
+    die("Akses ditolak");
 }
 ?>
 
 <h1>Dashboard Pasien</h1>
 
-<p>
-Selamat datang
-<?= htmlspecialchars($_SESSION['nama']) ?>
-</p>
-
-<a href="../auth/logout.php">
-Logout
-</a>
-
-<a
-href="rekam_medis.php"
-class="btn btn-primary">
-
+<a href="rekam_medis.php">
 Lihat Rekam Medis
-
 </a>
 
-<a
-href="upload.php"
-class="btn btn-success">
+<br><br>
 
+<a href="upload.php">
 Upload Hasil Lab
-
 </a>
