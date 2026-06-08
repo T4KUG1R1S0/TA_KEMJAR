@@ -175,3 +175,54 @@ body{
     padding:20px;
     margin-top:80px;
 }
+
+/* REKAM MEDIS */
+
+.page-container{
+    padding: 30px;
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.page-title{
+    color:#0f766e;
+    font-size:32px;
+    font-weight:700;
+}
+
+.medical-card{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.table{
+    margin-bottom:0;
+}
+
+.table thead{
+    background:#14b8a6;
+    color:white;
+}
+
+.table th{
+    padding:15px;
+}
+
+.table td{
+    padding:15px;
+    vertical-align:middle;
+}
+
+.badge-medical{
+    background:#14b8a6;
+    color:white;
+    padding:8px 12px;
+    border-radius:20px;
+}
