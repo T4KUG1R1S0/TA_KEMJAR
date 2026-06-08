@@ -1,12 +1,23 @@
 <?php
 /** @var mysqli $conn */
-session_start();
 
+
+session_start();
+if(empty($_SESSION['csrf_token'])){
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 include "../config/koneksi.php";
 
 $error = "";
 
 if(isset($_POST['login'])){
+
+if(
+    !isset($_POST['csrf_token']) ||
+    $_POST['csrf_token'] !== $_SESSION['csrf_token']
+){
+    die("CSRF Detected");
+}
 
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
@@ -35,7 +46,7 @@ if(isset($_POST['login'])){
                 $user['password']
             )
         ){
-            
+
             session_regenerate_id(true);
 
             $_SESSION['id'] = $user['id'];
@@ -106,6 +117,12 @@ href="../assets/css/style.css">
 <?= $error ?>
 
 <form method="POST">
+
+<input
+    type="hidden"
+    name="csrf_token"
+    value="<?= $_SESSION['csrf_token'] ?>"
+>
 
 <div class="mb-3">
 

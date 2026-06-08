@@ -11,6 +11,13 @@ $message = "";
 
 if (isset($_POST['upload'])) {
 
+    if(
+        !isset($_POST['csrf_token']) ||
+        $_POST['csrf_token'] !== $_SESSION['csrf_token']
+    ){
+        die("CSRF Detected");
+    }
+
     if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
 
         $namaFile = $_FILES['file']['name'];
