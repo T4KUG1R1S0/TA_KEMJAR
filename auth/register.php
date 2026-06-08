@@ -108,6 +108,8 @@ if(isset($_POST['register'])){
 
         <?= $message ?>
 
+        echo $_SESSION['csrf_token'];
+        
         <form method="POST">
 
             <input
