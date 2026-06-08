@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root{
+    --primary:#0f766e;
+    --secondary:#14b8a6;
+    --accent:#06b6d4;
+    --dark:#0f172a;
+    --light:#f8fafc;
+    --white:#ffffff;
+    --success:#22c55e;
+    --danger:#ef4444;
+    --shadow:0 15px 35px rgba(0,0,0,.08);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    min-height:100vh;
+}
+
+/* =====================
+   NAVBAR
+===================== */
+
+.navbar{
+    background:linear-gradient(
+        135deg,
+        #0f766e,
+        #14b8a6
+    );
+    padding:15px 0;
+    box-shadow:var(--shadow);
+}
+
+.navbar-brand{
+    color:white !important;
+    font-size:24px;
+    font-weight:700;
+}
+
+/* =====================
+   LOGIN
+===================== */
+
+.login-container{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+    linear-gradient(
+        rgba(15,118,110,.85),
+        rgba(20,184,166,.85)
+    ),
+    url("https://images.unsplash.com/photo-1576091160399-112ba8d25d1d");
+    background-size:cover;
+}
+
+.login-card{
+    width:450px;
+    background:rgba(255,255,255,.95);
+    backdrop-filter:blur(10px);
+    padding:40px;
+    border-radius:25px;
+    box-shadow:0 20px 50px rgba(0,0,0,.15);
+}
+
+.login-title{
+    text-align:center;
+    margin-bottom:30px;
+    color:var(--primary);
+    font-weight:700;
+}
+
+.form-control{
+    border-radius:15px;
+    padding:12px;
+    border:1px solid #cbd5e1;
+}
+
+.form-control:focus{
+    border-color:var(--secondary);
+    box-shadow:0 0 15px rgba(20,184,166,.2);
+}
+
+.btn-primary{
+    background:var(--secondary);
+    border:none;
+    border-radius:15px;
+    padding:12px;
+    font-weight:600;
+}
+
+.btn-primary:hover{
+    background:var(--primary);
+}
+
+/* =====================
+   HERO INDEX
+===================== */
+
+.hero{
+    min-height:90vh;
+    display:flex;
+    align-items:center;
+    background:
+    linear-gradient(
+        135deg,
+        #e0fdfa,
+        #f0fdfa
+    );
+}
+
+.hero-title{
+    font-size:60px;
+    font-weight:800;
+    color:var(--primary);
+}
+
+.hero-text{
+    margin-top:15px;
+    font-size:18px;
+    color:#475569;
+}
+
+.hero-btn{
+    margin-top:25px;
+}
+
+/* =====================
+   DASHBOARD
+===================== */
+
+.dashboard-container{
+    padding:30px;
+}
+
+.dashboard-title{
+    font-size:35px;
+    font-weight:700;
+    color:var(--primary);
+    margin-bottom:30px;
+}
+
+.stat-card{
+    border:none;
+    border-radius:25px;
+    color:white;
+    padding:30px;
+    margin-bottom:25px;
+    box-shadow:var(--shadow);
+}
+
+.bg-pasien{
+    background:linear-gradient(
+        135deg,
+        #06b6d4,
+        #0891b2
+    );
+}
+
+.bg-dokter{
+    background:linear-gradient(
+        135deg,
+        #22c55e,
+        #16a34a
+    );
+}
+
+.bg-rekam{
+    background:linear-gradient(
+        135deg,
+        #8b5cf6,
+        #7c3aed
+    );
+}
+
+.stat-number{
+    font-size:45px;
+    font-weight:700;
+}
+
+/* =====================
+   MENU CARD
+===================== */
+
+.menu-card{
+    background:white;
+    border:none;
+    border-radius:25px;
+    padding:30px;
+    text-align:center;
+    box-shadow:var(--shadow);
+    transition:.3s;
+    height:100%;
+}
+
+.menu-card:hover{
+    transform:translateY(-10px);
+}
+
+.menu-icon{
+    font-size:55px;
+    margin-bottom:15px;
+}
+
+.menu-title{
+    font-size:22px;
+    font-weight:600;
+}
+
+/* =====================
+   CONTENT CARD
+===================== */
+
+.medical-card{
+    background:white;
+    border-radius:25px;
+    padding:30px;
+    box-shadow:var(--shadow);
+}
+
+.page-title{
+    color:var(--primary);
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:25px;
+}
+
+/* =====================
+   TABLE
+===================== */
+
+.table{
+    overflow:hidden;
+    border-radius:20px;
+}
+
+.table thead{
+    background:var(--secondary);
+    color:white;
+}
+
+.table th{
+    padding:15px;
+}
+
+.table td{
+    padding:15px;
+    vertical-align:middle;
+}
+
+/* =====================
+   BADGE
+===================== */
+
+.badge-medical{
+    background:var(--secondary);
+    color:white;
+    padding:8px 15px;
+    border-radius:50px;
+}
+
+/* =====================
+   BUTTON
+===================== */
+
+.btn-success{
+    background:var(--secondary);
+    border:none;
+    border-radius:15px;
+}
+
+.btn-success:hover{
+    background:var(--primary);
+}
+
+.btn-danger,
+.btn-light{
+    border-radius:15px;
+}
+
+/* =====================
+   ALERT
+===================== */
+
+.alert{
+    border-radius:15px;
+}
+
+/* =====================
+   FOOTER
+===================== */
+
+.footer{
+    background:var(--primary);
+    color:white;
+    padding:20px;
+    text-align:center;
+    margin-top:50px;
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+
+@media(max-width:768px){
+
+    .hero-title{
+        font-size:40px;
+    }
+
+    .login-card{
+        width:95%;
+    }
+
+    .dashboard-title{
+        font-size:28px;
+    }
+}

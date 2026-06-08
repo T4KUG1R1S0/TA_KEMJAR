@@ -1,8 +1,5 @@
 <?php
 /** @var mysqli $conn */
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 session_start();
 
 include "../config/koneksi.php";
@@ -12,11 +9,10 @@ $error = "";
 if(isset($_POST['login'])){
 
     $email = trim($_POST['email']);
-    $password = $_POST['password'];
+    $password = trim($_POST['password']);
 
     $stmt = $conn->prepare(
-        "SELECT * FROM users
-        WHERE email=?"
+        "SELECT * FROM users WHERE email=?"
     );
 
     $stmt->bind_param(
@@ -32,13 +28,14 @@ if(isset($_POST['login'])){
 
         $user = $result->fetch_assoc();
 
+        // LOGIN SEMENTARA PLAINTEXT
         if(
             password_verify(
                 $password,
                 $user['password']
             )
         ){
-
+            
             session_regenerate_id(true);
 
             $_SESSION['id'] = $user['id'];
@@ -50,22 +47,22 @@ if(isset($_POST['login'])){
                 header(
                     "Location: ../admin/dashboard.php"
                 );
+                exit;
 
             }elseif($user['role'] == 'dokter'){
 
                 header(
                     "Location: ../dokter/dashboard.php"
                 );
+                exit;
 
             }else{
 
                 header(
                     "Location: ../pasien/dashboard.php"
                 );
-
+                exit;
             }
-
-            exit;
         }
     }
 
@@ -74,7 +71,6 @@ if(isset($_POST['login'])){
         Email atau Password salah
     </div>";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -84,11 +80,16 @@ if(isset($_POST['login'])){
 
 <meta charset="UTF-8">
 
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
 <title>Login MediSecure</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet">
 
-<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet"
+href="../assets/css/style.css">
 
 </head>
 
@@ -112,7 +113,7 @@ if(isset($_POST['login'])){
 type="email"
 name="email"
 class="form-control"
-placeholder="Email"
+placeholder="Masukkan Email"
 required>
 
 </div>
@@ -123,7 +124,7 @@ required>
 type="password"
 name="password"
 class="form-control"
-placeholder="Password"
+placeholder="Masukkan Password"
 required>
 
 </div>
@@ -144,7 +145,7 @@ Login
 Belum punya akun?
 
 <a href="register.php">
-Register
+Daftar
 </a>
 
 </div>

@@ -1,5 +1,4 @@
 <?php
-/** @var mysqli $conn */
 
 include "../middleware/auth.php";
 
@@ -10,120 +9,89 @@ if($_SESSION['role'] != 'pasien'){
 ?>
 
 <!DOCTYPE html>
-<html lang="id">
-
+<html>
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Pasien</title>
 
-    <title>Dashboard Pasien</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-dark">
 
-    <div class="container">
+<div class="container">
 
-        <a class="navbar-brand" href="#">
-            🏥 MediSecure
-        </a>
+<span class="navbar-brand">
+🏥 MediSecure
+</span>
 
-        <div>
+<a href="../auth/logout.php" class="btn btn-light">
+Logout
+</a>
 
-            <span class="text-white me-3">
-                <?= htmlspecialchars($_SESSION['nama']) ?>
-            </span>
-
-            <a
-                href="../auth/logout.php"
-                class="btn btn-danger">
-
-                Logout
-
-            </a>
-
-        </div>
-
-    </div>
+</div>
 
 </nav>
 
 <div class="container dashboard-container">
 
-    <h1 class="dashboard-title">
-        Dashboard Pasien
-    </h1>
+<h2 class="dashboard-title">
 
-    <p class="welcome-text">
-        Selamat datang di sistem rekam medis MediSecure
-    </p>
+Halo,
+<?= $_SESSION['nama'] ?>
 
-    <div class="row">
+👋
 
-        <div class="col-md-6 mb-4">
+</h2>
 
-            <div class="menu-card">
+<div class="row">
 
-                <div class="menu-icon">
-                    📋
-                </div>
+<div class="col-md-6">
 
-                <h4 class="menu-title">
-                    Rekam Medis
-                </h4>
+<a href="rekam_medis.php" class="text-decoration-none">
 
-                <p>
-                    Lihat seluruh riwayat pemeriksaan kesehatan Anda.
-                </p>
+<div class="menu-card">
 
-                <a
-                    href="rekam_medis.php"
-                    class="btn btn-primary btn-menu">
+<div class="menu-icon">
+📋
+</div>
 
-                    Lihat Rekam Medis
+<div class="menu-title">
+Lihat Rekam Medis
+</div>
 
-                </a>
+</div>
 
-            </div>
+</a>
 
-        </div>
+</div>
 
-        <div class="col-md-6 mb-4">
+<div class="col-md-6">
 
-            <div class="menu-card">
+<a href="upload.php" class="text-decoration-none">
 
-                <div class="menu-icon">
-                    🧪
-                </div>
+<div class="menu-card">
 
-                <h4 class="menu-title">
-                    Upload Hasil Lab
-                </h4>
+<div class="menu-icon">
+🧪
+</div>
 
-                <p>
-                    Upload hasil pemeriksaan laboratorium dengan aman.
-                </p>
+<div class="menu-title">
+Upload Hasil Lab
+</div>
 
-                <a
-                    href="upload.php"
-                    class="btn btn-success btn-menu">
+</div>
 
-                    Upload File
+</a>
 
-                </a>
+</div>
 
-            </div>
-
-        </div>
-
-    </div>
+</div>
 
 </div>
 

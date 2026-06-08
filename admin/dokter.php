@@ -1,64 +1,31 @@
 <?php
-
 /** @var mysqli $conn */
-
 include "../middleware/auth.php";
 include "../config/koneksi.php";
 
-if ($_SESSION['role'] != 'admin') {
-    die("Akses Ditolak");
+if($_SESSION['role'] != 'admin'){
+    die("Akses ditolak");
 }
 
 /*
-|--------------------------------------------------------------------------
-| HAPUS DOKTER
-|--------------------------------------------------------------------------
+TAMBAH DOKTER
 */
+if(isset($_POST['tambah'])){
 
-if (isset($_GET['hapus'])) {
-
-    $id = (int)$_GET['hapus'];
-
-    $cek = mysqli_query(
-        $conn,
-        "SELECT user_id FROM dokter WHERE id='$id'"
-    );
-
-    $data = mysqli_fetch_assoc($cek);
-
-    if ($data) {
-
-        mysqli_query(
-            $conn,
-            "DELETE FROM users WHERE id='{$data['user_id']}'"
-        );
-    }
-
-    header("Location: dokter.php");
-    exit;
-}
-
-/*
-|--------------------------------------------------------------------------
-| TAMBAH DOKTER
-|--------------------------------------------------------------------------
-*/
-
-if (isset($_POST['simpan'])) {
-
-    $nama = trim($_POST['nama']);
-    $email = trim($_POST['email']);
-    $spesialis = trim($_POST['spesialis']);
+    $nama = $_POST['nama'];
+    $email = $_POST['email'];
+    $spesialis = $_POST['spesialis'];
 
     $password = password_hash(
-        "doctor123",
+        "dokter123",
         PASSWORD_DEFAULT
     );
 
     $stmt = $conn->prepare(
         "INSERT INTO users
         (nama,email,password,role)
-        VALUES (?,?,?,'dokter')"
+        VALUES
+        (?,?,?,'dokter')"
     );
 
     $stmt->bind_param(
@@ -68,170 +35,197 @@ if (isset($_POST['simpan'])) {
         $password
     );
 
-    if ($stmt->execute()) {
+    $stmt->execute();
 
-        $user_id = mysqli_insert_id($conn);
+    $user_id = $conn->insert_id;
 
-        $stmt2 = $conn->prepare(
-            "INSERT INTO dokter
-            (user_id,spesialis)
-            VALUES (?,?)"
-        );
+    $stmt2 = $conn->prepare(
+        "INSERT INTO dokter
+        (user_id,spesialis)
+        VALUES
+        (?,?)"
+    );
 
-        $stmt2->bind_param(
-            "is",
-            $user_id,
-            $spesialis
-        );
+    $stmt2->bind_param(
+        "is",
+        $user_id,
+        $spesialis
+    );
 
-        $stmt2->execute();
-    }
+    $stmt2->execute();
 
-    header("Location: dokter.php");
+    header("Location:dokter.php");
     exit;
 }
 
 /*
-|--------------------------------------------------------------------------
-| TAMPIL DATA DOKTER
-|--------------------------------------------------------------------------
+HAPUS
 */
 
-$query = mysqli_query(
-    $conn,
-    "SELECT
-        dokter.id,
-        users.nama,
-        users.email,
-        dokter.spesialis
+if(isset($_GET['hapus'])){
 
-    FROM dokter
+    $id = (int)$_GET['hapus'];
 
-    JOIN users
-    ON dokter.user_id = users.id
+    mysqli_query(
+        $conn,
+        "DELETE FROM users WHERE id=$id"
+    );
 
-    ORDER BY dokter.id DESC"
-);
+    header("Location:dokter.php");
+    exit;
+}
+
+$data = mysqli_query($conn,"
+SELECT
+u.id,
+u.nama,
+u.email,
+d.spesialis
+FROM users u
+LEFT JOIN dokter d
+ON u.id=d.user_id
+WHERE role='dokter'
+");
 
 ?>
 
 <!DOCTYPE html>
 <html>
-
 <head>
 
-    <title>Kelola Dokter</title>
+<title>Kelola Dokter</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
-
 <body>
 
-<div class="container mt-4">
+<nav class="navbar navbar-dark">
 
-    <h2>Kelola Dokter</h2>
+<div class="container">
 
-    <a href="dashboard.php" class="btn btn-secondary mb-3">
-        Kembali
-    </a>
+<span class="navbar-brand">
+👨‍⚕️ Kelola Dokter
+</span>
 
-    <div class="card p-3 mb-4">
+<a href="dashboard.php" class="btn btn-light">
+Dashboard
+</a>
 
-        <h4>Tambah Dokter</h4>
+</div>
 
-        <form method="POST">
+</nav>
 
-            <div class="mb-2">
-                <input
-                    type="text"
-                    name="nama"
-                    class="form-control"
-                    placeholder="Nama Dokter"
-                    required>
-            </div>
+<div class="container page-container">
 
-            <div class="mb-2">
-                <input
-                    type="email"
-                    name="email"
-                    class="form-control"
-                    placeholder="Email"
-                    required>
-            </div>
+<div class="medical-card mb-4">
 
-            <div class="mb-2">
-                <input
-                    type="text"
-                    name="spesialis"
-                    class="form-control"
-                    placeholder="Spesialis"
-                    required>
-            </div>
+<h3>Tambah Dokter</h3>
 
-            <button
-                type="submit"
-                name="simpan"
-                class="btn btn-primary">
+<form method="POST">
 
-                Simpan
+<div class="row">
 
-            </button>
+<div class="col-md-4">
 
-        </form>
+<input
+type="text"
+name="nama"
+class="form-control"
+placeholder="Nama Dokter"
+required>
 
-    </div>
+</div>
 
-    <table class="table table-bordered table-striped">
+<div class="col-md-4">
 
-        <thead>
+<input
+type="email"
+name="email"
+class="form-control"
+placeholder="Email"
+required>
 
-        <tr>
-            <th>No</th>
-            <th>Nama</th>
-            <th>Email</th>
-            <th>Spesialis</th>
-            <th>Aksi</th>
-        </tr>
+</div>
 
-        </thead>
+<div class="col-md-4">
 
-        <tbody>
+<input
+type="text"
+name="spesialis"
+class="form-control"
+placeholder="Spesialis"
+required>
 
-        <?php $no = 1; ?>
+</div>
 
-        <?php while ($row = mysqli_fetch_assoc($query)) : ?>
+</div>
 
-            <tr>
+<button
+name="tambah"
+class="btn btn-success mt-3">
 
-                <td><?= $no++ ?></td>
+Tambah Dokter
 
-                <td><?= htmlspecialchars($row['nama']) ?></td>
+</button>
 
-                <td><?= htmlspecialchars($row['email']) ?></td>
+</form>
 
-                <td><?= htmlspecialchars($row['spesialis']) ?></td>
+</div>
 
-                <td>
+<div class="medical-card">
 
-                    <a
-                        href="?hapus=<?= $row['id'] ?>"
-                        class="btn btn-danger btn-sm"
-                        onclick="return confirm('Hapus dokter ini?')">
+<h3>Data Dokter</h3>
 
-                        Hapus
+<table class="table">
 
-                    </a>
+<thead>
 
-                </td>
+<tr>
 
-            </tr>
+<th>Nama</th>
+<th>Email</th>
+<th>Spesialis</th>
+<th>Aksi</th>
 
-        <?php endwhile; ?>
+</tr>
 
-        </tbody>
+</thead>
 
-    </table>
+<tbody>
+
+<?php while($row=mysqli_fetch_assoc($data)){ ?>
+
+<tr>
+
+<td><?= $row['nama'] ?></td>
+<td><?= $row['email'] ?></td>
+<td><?= $row['spesialis'] ?></td>
+
+<td>
+
+<a
+href="?hapus=<?= $row['id'] ?>"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Hapus dokter?')">
+
+Hapus
+
+</a>
+
+</td>
+
+</tr>
+
+<?php } ?>
+
+</tbody>
+
+</table>
+
+</div>
 
 </div>
 

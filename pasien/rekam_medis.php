@@ -3,42 +3,172 @@
 include "../middleware/auth.php";
 include "../config/koneksi.php";
 
+if($_SESSION['role'] != 'pasien'){
+    die("Akses ditolak");
+}
+
 $user_id = $_SESSION['id'];
 
-$query = mysqli_query($conn,"
-SELECT
-rm.*
+$stmt = $conn->prepare("
+    SELECT
+        rm.id,
+        rm.keluhan,
+        rm.diagnosa,
+        rm.tanggal_pemeriksaan
 
-FROM rekam_medis rm
+    FROM rekam_medis rm
 
-JOIN pasien p
-ON rm.pasien_id=p.id
+    JOIN pasien p
+    ON rm.pasien_id = p.id
 
-WHERE p.user_id='$user_id'
+    WHERE p.user_id = ?
+
+    ORDER BY rm.id DESC
 ");
+
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+
+$data = $stmt->get_result();
 
 ?>
 
-<table border="1" cellpadding="10">
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rekam Medis Saya</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark">
+
+<div class="container">
+
+<span class="navbar-brand">
+🏥 MediSecure
+</span>
+
+<div>
+
+<a
+href="dashboard.php"
+class="btn btn-light me-2">
+
+Dashboard
+
+</a>
+
+<a
+href="../auth/logout.php"
+class="btn btn-danger">
+
+Logout
+
+</a>
+
+</div>
+
+</div>
+
+</nav>
+
+<div class="container page-container">
+
+<div class="page-header">
+
+<h2 class="page-title">
+📋 Rekam Medis Saya
+</h2>
+
+</div>
+
+<div class="medical-card">
+
+<table class="table table-hover table-bordered">
+
+<thead>
 
 <tr>
+
+<th>No</th>
 <th>Keluhan</th>
 <th>Diagnosa</th>
 <th>Tanggal</th>
+
 </tr>
 
-<?php while($r=mysqli_fetch_assoc($query)){ ?>
+</thead>
+
+<tbody>
+
+<?php
+
+$no = 1;
+
+if($data->num_rows > 0){
+
+while($row = $data->fetch_assoc()){
+
+?>
 
 <tr>
 
-<td><?= htmlspecialchars($r['keluhan']) ?></td>
+<td><?= $no++ ?></td>
 
-<td><?= htmlspecialchars($r['diagnosa']) ?></td>
+<td><?= htmlspecialchars($row['keluhan']) ?></td>
 
-<td><?= $r['tanggal_pemeriksaan'] ?></td>
+<td>
+
+<span class="badge-medical">
+
+<?= htmlspecialchars($row['diagnosa']) ?>
+
+</span>
+
+</td>
+
+<td><?= htmlspecialchars($row['tanggal_pemeriksaan']) ?></td>
+
+</tr>
+
+<?php
+
+}
+
+}else{
+
+?>
+
+<tr>
+
+<td colspan="4" class="text-center">
+
+Belum ada data rekam medis
+
+</td>
 
 </tr>
 
 <?php } ?>
 
+</tbody>
+
 </table>
+
+</div>
+
+</div>
+
+</body>
+</html>
