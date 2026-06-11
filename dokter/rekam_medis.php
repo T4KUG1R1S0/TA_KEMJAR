@@ -10,40 +10,58 @@ if($_SESSION['role'] != 'dokter'){
 
 if(isset($_POST['simpan'])){
 
-    $pasien_id = $_POST['pasien_id'];
-    $keluhan = $_POST['keluhan'];
-    $diagnosa = $_POST['diagnosa'];
-    $tindakan = $_POST['tindakan'];
+    $pasien_id = (int)$_POST['pasien_id'];
 
-    $dokter = mysqli_query(
-        $conn,
-        "SELECT id FROM dokter
-        WHERE user_id='".$_SESSION['id']."'"
+    $keluhan = trim($_POST['keluhan']);
+    $diagnosa = trim($_POST['diagnosa']);
+    $tindakan = trim($_POST['tindakan']);
+
+    $stmt = $conn->prepare(
+        "SELECT id FROM dokter WHERE user_id=?"
     );
 
-    $dokterData = mysqli_fetch_assoc($dokter);
+    $stmt->bind_param(
+        "i",
+        $_SESSION['id']
+    );
 
+    $stmt->execute();
+    
+    $dokter = $stmt->get_result();
+    $dokterData = $dokter->fetch_assoc();
     $dokter_id = $dokterData['id'];
 
-    mysqli_query(
-        $conn,
-        "INSERT INTO rekam_medis
-        (
-            pasien_id,
-            dokter_id,
-            keluhan,
-            diagnosa,
-            tindakan
-        )
-        VALUES
-        (
-            '$pasien_id',
-            '$dokter_id',
-            '$keluhan',
-            '$diagnosa',
-            '$tindakan'
-        )"
-    );
+        $stmt = $conn->prepare(
+            "INSERT INTO rekam_medis
+            (
+                pasien_id,
+                dokter_id,
+                keluhan,
+                diagnosa,
+                tindakan
+            )
+            VALUES
+            (?,?,?,?,?)"
+        );
+
+        $stmt->bind_param(
+            "iisss",
+            $pasien_id,
+            $dokter_id,
+            $keluhan,
+            $diagnosa,
+            $tindakan
+        );
+
+        $stmt->execute();
+        mysqli_query(
+            $conn,
+            "INSERT INTO activity_log(user_id, aktivitas)
+            VALUES(
+                '{$_SESSION['id']}',
+                'Menambahkan rekam medis'
+            )"
+        );
 
     header("Location: rekam_medis.php");
     exit;
@@ -125,7 +143,7 @@ Pilih Pasien
 <?php while($p=mysqli_fetch_assoc($pasien)){ ?>
 
 <option value="<?= $p['id'] ?>">
-<?= $p['nama'] ?>
+<?= htmlspecialchars($p['nama']) ?>
 </option>
 
 <?php } ?>
@@ -200,10 +218,10 @@ Simpan
 
 <tr>
 
-<td><?= $row['pasien'] ?></td>
-<td><?= $row['keluhan'] ?></td>
-<td><?= $row['diagnosa'] ?></td>
-<td><?= $row['tindakan'] ?></td>
+<td><?= htmlspecialchars($row['pasien']) ?></td>
+<td><?= htmlspecialchars($row['keluhan']) ?></td>
+<td><?= htmlspecialchars($row['diagnosa']) ?></td>
+<td><?= htmlspecialchars($row['tindakan']) ?></td>
 
 </tr>
 

@@ -51,21 +51,7 @@ Register
 Sistem Rekam Medis Modern & Aman
 </h1>
 
-<p class="hero-text">
-
-Platform kesehatan dengan fokus pada:
-
-✔ Application Security
-
-✔ Infrastructure Security
-
-✔ Data Protection
-
-✔ Monitoring & Logging
-
-</p>
-
-<a href="register.php" class="btn btn-lg btn-success">
+<a href="auth/register.php" class="btn btn-lg btn-success">
 Mulai Sekarang
 </a>
 
@@ -84,66 +70,6 @@ width="350">
 </div>
 
 </section>
-
-<section class="container mt-5">
-
-<h2 class="text-center mb-4">
-Fitur Utama
-</h2>
-
-<div class="row">
-
-<div class="col-md-4">
-
-<div class="card feature-card">
-
-<div class="card-body">
-
-<h3>👨‍⚕️ Dokter</h3>
-
-<p>
-Kelola pasien dan rekam medis.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-md-4">
-
-<div class="card feature-card">
-
-<div class="card-body">
-
-<h3>🩺 Pasien</h3>
-
-<p>
-Melihat riwayat kesehatan secara aman.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-md-4">
-
-<div class="card feature-card">
-
-<div class="card-body">
-
-<h3>🔒 Security</h3>
-
-<p>
-RBAC, CSRF, XSS Protection, Logging.
-</p>
-
-</div>
-
-</div>
 
 </div>
 

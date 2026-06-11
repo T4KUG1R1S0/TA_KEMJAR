@@ -10,6 +10,21 @@ include "../config/koneksi.php";
 
 $error = "";
 
+if(!isset($_SESSION['login_attempt'])){
+    $_SESSION['login_attempt'] = 0;
+}
+
+if(!isset($_SESSION['lock_time'])){
+    $_SESSION['lock_time'] = 0;
+}
+
+if(
+    $_SESSION['login_attempt'] >= 5 &&
+    (time() - $_SESSION['lock_time']) < 300
+){
+    die("Terlalu banyak percobaan login. Coba lagi 5 menit.");
+}
+
 if(isset($_POST['login'])){
 
 if(
@@ -47,12 +62,23 @@ if(
             )
         ){
 
+            $_SESSION['login_attempt'] = 0;
+            $_SESSION['lock_time'] = 0;
+
             session_regenerate_id(true);
 
             $_SESSION['id'] = $user['id'];
             $_SESSION['nama'] = $user['nama'];
             $_SESSION['role'] = $user['role'];
 
+            mysqli_query(
+                $conn,
+                "INSERT INTO activity_log(user_id, aktivitas)
+                VALUES(
+                    '{$user['id']}',
+                    'Login berhasil'
+                )"
+            );
             if($user['role'] == 'admin'){
 
                 header(
@@ -75,6 +101,13 @@ if(
                 exit;
             }
         }
+    }
+
+    
+    $_SESSION['login_attempt']++;
+
+    if($_SESSION['login_attempt'] >= 5){
+        $_SESSION['lock_time'] = time();
     }
 
     $error = "

@@ -12,9 +12,13 @@ TAMBAH DOKTER
 */
 if(isset($_POST['tambah'])){
 
-    $nama = $_POST['nama'];
-    $email = $_POST['email'];
-    $spesialis = $_POST['spesialis'];
+    $nama = trim($_POST['nama']);
+    $email = trim($_POST['email']);
+    $spesialis = trim($_POST['spesialis']);
+
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        die("Email tidak valid");
+    }
 
     $password = password_hash(
         "dokter123",
@@ -53,6 +57,14 @@ if(isset($_POST['tambah'])){
     );
 
     $stmt2->execute();
+    mysqli_query(
+        $conn,
+        "INSERT INTO activity_log(user_id,aktivitas)
+        VALUES(
+            '{$_SESSION['id']}',
+            'Menambahkan dokter'
+        )"
+    );
 
     header("Location:dokter.php");
     exit;
@@ -66,10 +78,12 @@ if(isset($_GET['hapus'])){
 
     $id = (int)$_GET['hapus'];
 
-    mysqli_query(
-        $conn,
-        "DELETE FROM users WHERE id=$id"
+    $stmt = $conn->prepare(
+        "DELETE FROM users WHERE id=?"
     );
+
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
 
     header("Location:dokter.php");
     exit;
@@ -200,9 +214,9 @@ Tambah Dokter
 
 <tr>
 
-<td><?= $row['nama'] ?></td>
-<td><?= $row['email'] ?></td>
-<td><?= $row['spesialis'] ?></td>
+<td><?= htmlspecialchars($row['nama'] ?? '-') ?></td>
+<td><?= htmlspecialchars($row['email'] ?? '-') ?></td>
+<td><?= htmlspecialchars($row['spesialis'] ?? '-') ?></td>
 
 <td>
 

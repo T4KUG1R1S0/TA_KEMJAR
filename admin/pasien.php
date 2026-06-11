@@ -11,10 +11,13 @@ if(isset($_GET['hapus'])){
 
     $id = (int)$_GET['hapus'];
 
-    mysqli_query(
-        $conn,
-        "DELETE FROM users WHERE id=$id AND role='pasien'"
+    $stmt = $conn->prepare(
+        "DELETE FROM users
+        WHERE id=? AND role='pasien'"
     );
+
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
 
     header("Location: pasien.php");
     exit;
@@ -92,11 +95,9 @@ Data Pasien
 
 <tr>
 
-<td><?= $row['id'] ?></td>
-
-<td><?= $row['nama'] ?></td>
-
-<td><?= $row['email'] ?></td>
+<td><?= htmlspecialchars($row['id']) ?></td>
+<td><?= htmlspecialchars($row['nama']) ?></td>
+<td><?= htmlspecialchars($row['email']) ?></td>
 
 <td>
 

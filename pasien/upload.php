@@ -3,6 +3,10 @@
 include "../middleware/auth.php";
 include "../config/koneksi.php";
 
+if(empty($_SESSION['csrf_token'])){
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 if ($_SESSION['role'] != 'pasien') {
     die("Akses ditolak");
 }
@@ -86,6 +90,16 @@ if (isset($_POST['upload'])) {
                             '$ext'
                         )"
                     );
+
+                    mysqli_query(
+                        $conn,
+                        "INSERT INTO activity_log(user_id, aktivitas)
+                        VALUES(
+                            '{$_SESSION['id']}',
+                            'Upload hasil laboratorium'
+                        )"
+                    );
+
 
                     $message = "
                     <div class='alert alert-success'>
@@ -172,6 +186,12 @@ if (isset($_POST['upload'])) {
 
                 <form method="POST" enctype="multipart/form-data">
 
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="<?= $_SESSION['csrf_token'] ?>"
+                    >
+
                     <div class="mb-3">
                         <label class="form-label">
                             Pilih File
@@ -188,9 +208,7 @@ if (isset($_POST['upload'])) {
                         type="submit"
                         name="upload"
                         class="btn btn-success">
-
                         Upload Sekarang
-
                     </button>
 
                 </form>
