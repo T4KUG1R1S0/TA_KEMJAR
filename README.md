@@ -1,3 +1,6 @@
+#KELOMPOK TRASH GANG
+- MAHABAYUBADRA ARDAYANTA - 152024001
+- NUR HAYYU FADILLAH - 152024040
 # MediSecure
 
 Sistem Rekam Medis berbasis PHP dan MySQL untuk manajemen pasien, dokter, dan rekam medis.
