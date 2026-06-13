@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4fdfb;
+    min-height:100vh;
+}
+
+/* Navbar */
+
+.navbar{
+    background:linear-gradient(
+        135deg,
+        #0ea5a4,
+        #14b8a6
+    );
+    box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+.navbar-brand{
+    color:white !important;
+    font-weight:700;
+    font-size:24px;
+}
+
+/* Card */
+
+.card{
+    border:none;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+/* Dashboard */
+
+.stat-card{
+    color:white;
+    border-radius:20px;
+    padding:25px;
+}
+
+.bg-pasien{
+    background:linear-gradient(
+        135deg,
+        #06b6d4,
+        #0891b2
+    );
+}
+
+.bg-dokter{
+    background:linear-gradient(
+        135deg,
+        #10b981,
+        #059669
+    );
+}
+
+.bg-rekam{
+    background:linear-gradient(
+        135deg,
+        #8b5cf6,
+        #7c3aed
+    );
+}
+
+.stat-number{
+    font-size:42px;
+    font-weight:700;
+}
+
+/* Login */
+
+.login-container{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-card{
+    width:450px;
+    background:white;
+    border-radius:25px;
+    padding:40px;
+    box-shadow:0 10px 40px rgba(0,0,0,.1);
+}
+
+.login-title{
+    text-align:center;
+    margin-bottom:30px;
+    color:#0f766e;
+    font-weight:700;
+}
+
+.form-control{
+    border-radius:12px;
+    padding:12px;
+}
+
+.btn-primary{
+    background:#14b8a6;
+    border:none;
+    border-radius:12px;
+}
+
+.btn-primary:hover{
+    background:#0f766e;
+}
+
+/* Table */
+
+.table{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.table th{
+    background:#14b8a6;
+    color:white;
+}
+
+/* Button Menu */
+
+.menu-btn{
+    width:100%;
+    padding:15px;
+    border-radius:15px;
+    font-weight:600;
+}
+
+.hero{
+    min-height:85vh;
+    display:flex;
+    align-items:center;
+    background:linear-gradient(
+        135deg,
+        #e0fdfa,
+        #f0fdfa
+    );
+}
+
+.hero-title{
+    font-size:55px;
+    font-weight:700;
+    color:#0f766e;
+}
+
+.hero-text{
+    font-size:18px;
+    color:#555;
+    margin:20px 0;
+}
+
+.feature-card{
+    border:none;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.feature-card:hover{
+    transform:translateY(-10px);
+}
+
+.footer{
+    background:#0f766e;
+    color:white;
+    padding:20px;
+    margin-top:80px;
+}
+
+/* REKAM MEDIS */
+
+.page-container{
+    padding: 30px;
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.page-title{
+    color:#0f766e;
+    font-size:32px;
+    font-weight:700;
+}
+
+.medical-card{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.table{
+    margin-bottom:0;
+}
+
+.table thead{
+    background:#14b8a6;
+    color:white;
+}
+
+.table th{
+    padding:15px;
+}
+
+.table td{
+    padding:15px;
+    vertical-align:middle;
+}
+
+.badge-medical{
+    background:#14b8a6;
+    color:white;
+    padding:8px 12px;
+    border-radius:20px;
+}
+

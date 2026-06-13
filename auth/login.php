@@ -54,7 +54,6 @@ if(
 
         $user = $result->fetch_assoc();
 
-        // LOGIN SEMENTARA PLAINTEXT
         if(
             password_verify(
                 $password,
